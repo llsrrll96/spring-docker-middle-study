@@ -48,3 +48,8 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// jar 파일을 1개로 만들기
+jar {
+	enabled = false
+}

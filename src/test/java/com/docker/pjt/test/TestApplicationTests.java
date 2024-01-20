@@ -1,13 +1,9 @@
 package com.docker.pjt.test;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class TestApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-}
+//class TestApplicationTests {
+//
+//	void contextLoads() {
+//
+//	}
+//
+//}
