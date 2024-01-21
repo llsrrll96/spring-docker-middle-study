@@ -13,12 +13,13 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "blog")
 public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    @Column(nullable = false, name = "created_at")
+    @Column(nullable = false, name = "created_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
     private String title;
 
