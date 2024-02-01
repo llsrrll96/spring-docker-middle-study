@@ -40,8 +40,8 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: 22
         script: |
-          sudo docker stop spring-docker-middle-study
-          sudo docker rm spring-docker-middle-study
-          sudo docker image rm ${{ secrets.DOCKER_REPO }}
-          sudo docker pull ${{ secrets.DOCKER_REPO }}
-          sudo docker run -d -p 8001:8001 ${{ secrets.DOCKER_REPO }} --name spring-docker-middle-study
+          docker stop spring-docker-middle-study
+          docker rm spring-docker-middle-study
+          docker image rm ${{ secrets.DOCKER_REPO }}
+          docker pull ${{ secrets.DOCKER_REPO }}
+          docker run -d -p 8001:8001 ${{ secrets.DOCKER_REPO }} --name spring-docker-middle-study
