@@ -44,4 +44,4 @@ jobs:
           docker rm spring-docker-middle-study
           docker image rm ${{ secrets.DOCKER_REPO }}
           docker pull ${{ secrets.DOCKER_REPO }}
-          docker run -d -p 8001:8001 ${{ secrets.DOCKER_REPO }} --name spring-docker-middle-study
+          docker run --name spring-docker-middle-study -d -p 8001:8001 ${{ secrets.DOCKER_REPO }} 
