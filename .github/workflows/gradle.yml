@@ -12,13 +12,14 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-
+    
+permissions:
+  contents: read
+  
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
     - uses: actions/checkout@v4
@@ -32,6 +33,6 @@ jobs:
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@ec92e829475ac0c2315ea8f9eced72db85bb337a # v3.0.0
+      with:
+        arguments: build 
 
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
