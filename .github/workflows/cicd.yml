@@ -10,11 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
+    - uses: actions/checkout@v4
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
@@ -31,3 +29,19 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker build -t ${{ secrets.DOCKER_REPO }} .
         docker push ${{ secrets.DOCKER_REPO }}
+
+
+    ## 서버에 접속하여 도커 이미지를 pull 받고 실행
+    - name: executing remote ssh commands
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |
+          sudo docker stop spring-docker-middle-study
+          sudo docker rm spring-docker-middle-study
+          sudo docker image rm ${{ secrets.DOCKER_REPO }}
+          sudo docker pull ${{ secrets.DOCKER_REPO }}
+          sudo docker run -d -p 8001:8001 ${{ secrets.DOCKER_REPO }} --name spring-docker-middle-study
