@@ -19,7 +19,13 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: gradle
-
+        
+    - name: make application.properties
+      if: true 
+      run: |
+       touch ./src/main/resources/application.yml
+       echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+       
     - name: Build with Gradle
       run: |
         chmod +x ./gradlew 
