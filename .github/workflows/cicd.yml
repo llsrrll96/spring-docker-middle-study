@@ -18,12 +18,10 @@ jobs:
         distribution: 'temurin'
         cache: gradle
         
-    - name: make application.properties
-      if: true 
-      run: |
-       touch ./src/main/resources/application.yml
-       echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
-       cat ./src/main/resources/application.yml
+    - uses: actions/checkout@v3
+    - run: touch ./src/main/resources/application.yml
+    - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+    - run: cat ./src/main/resources/application.yml
        
     - name: Build with Gradle
       run: |
