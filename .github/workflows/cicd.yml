@@ -29,25 +29,27 @@ jobs:
         chmod +x ./gradlew 
         ./gradlew build
 
-    ## 도커 이미지 빌드 후 도커허브에 push
-    - name: docker build and push
-      run: |
-        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker build -t ${{ secrets.DOCKER_REPO }} .
-        docker push ${{ secrets.DOCKER_REPO }}
-
-
-    ## 서버에 접속하여 도커 이미지를 pull 받고 실행
-    - name: executing remote ssh commands
-      uses: appleboy/ssh-action@v1.0.3
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        port: 22
-        script: |
-          docker stop spring-docker-middle-study
-          docker rm spring-docker-middle-study
-          docker image rm ${{ secrets.DOCKER_REPO }}
-          docker pull ${{ secrets.DOCKER_REPO }}
-          docker run --name spring-docker-middle-study -d -p 8001:8001 ${{ secrets.DOCKER_REPO }} 
+        name: mypetlog
+        path: build/libs/*.jar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: mypetlog
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY  }}
+      - name: SCP transfer
+        run: scp *.jar ${{ secrets.USERNAME  }}@${{ secrets.HOST  }}:~/cicd
+      - name: Execute remote commands
+        run: |
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "sudo fuser -k 8080/tcp"
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "sudo nohup java -jar -Dspring.profiles.active=dev -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTOR_PASSWORD  }} ~/cicd/*.jar &"
