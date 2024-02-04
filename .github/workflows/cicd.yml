@@ -35,7 +35,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: mypetlog
-        path: build/libs/mypetlog-0.0.1-SNAPSHOT.jar
+        path: build/libs/test-0.0.1-SNAPSHOT.jar
 
   # 배포 **
   deploy:
