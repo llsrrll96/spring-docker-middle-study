@@ -54,7 +54,7 @@ public class BlogController {
 
     // blog 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBlog(
+    public ResponseEntity<String> deleteBlog(
             @PathVariable("id") Long id
     ) {
         log.info("deleteBlog id: {}", id);
